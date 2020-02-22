@@ -1,0 +1,7 @@
+# Default ignored files
+/workspace.xml
+__pycache__
+.idea
+data
+.DS_Store
+*.pth

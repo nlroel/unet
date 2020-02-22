@@ -1,0 +1,19 @@
+THCudaCheck FAIL file=/opt/conda/conda-bld/pytorch_1579022027550/work/aten/src/THC/THCGeneral.cpp line=50 error=100 : no CUDA-capable device is detected
+Traceback (most recent call last):
+  File "/gs/home/majg/liupeng/unet/main.py", line 84, in <module>
+    train(args)
+  File "/gs/home/majg/liupeng/unet/main.py", line 48, in train
+    model = Unet(1, 1).to(device)
+  File "/gs/home/majg/anaconda/envs/dlenv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 425, in to
+    return self._apply(convert)
+  File "/gs/home/majg/anaconda/envs/dlenv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 201, in _apply
+    module._apply(fn)
+  File "/gs/home/majg/anaconda/envs/dlenv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 201, in _apply
+    module._apply(fn)
+  File "/gs/home/majg/anaconda/envs/dlenv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 223, in _apply
+    param_applied = fn(param)
+  File "/gs/home/majg/anaconda/envs/dlenv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 423, in convert
+    return t.to(device, dtype if t.is_floating_point() else None, non_blocking)
+  File "/gs/home/majg/anaconda/envs/dlenv/lib/python3.8/site-packages/torch/cuda/__init__.py", line 197, in _lazy_init
+    torch._C._cuda_init()
+RuntimeError: cuda runtime error (100) : no CUDA-capable device is detected at /opt/conda/conda-bld/pytorch_1579022027550/work/aten/src/THC/THCGeneral.cpp:50
