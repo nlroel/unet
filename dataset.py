@@ -31,22 +31,17 @@ class LiverDataset(Dataset):
     def __getitem__(self, index):
         x_path, y_path = self.imgs[index]
         img_x = scio.loadmat(x_path)['scan_lines']
-        img_y = Image.open(y_path).convert('L')
-        tmp_y = np.array(img_y)
+        img_y = Image.open(y_path)
         tmp_x = img_x
-        tmp_x = tmp_x / 32768.0
-        tmp_y = tmp_y / 127.5 - 1
+        tmp_y = np.array(img_y)
+        tmp_x[:,0:100]=0
         img_x = Image.fromarray(tmp_x.transpose())
         img_y = Image.fromarray(tmp_y.transpose())
-        img_x = transforms.Resize((1024, 128))(img_x)
-        img_y = transforms.Resize((1024, 128))(img_y)
-        img_x = torch.from_numpy(np.array(img_x))
-        img_y = torch.from_numpy(np.array(img_y))
 
-        # if self.transform is not None:
-        #     img_x = self.transform(img_x)
-        # if self.target_transform is not None:
-        #     img_y = self.target_transform(img_y)
+        if self.transform is not None:
+            img_x = self.transform(img_x)
+        if self.target_transform is not None:
+            img_y = self.target_transform(img_y)
         return img_x, img_y
 
     def __len__(self):

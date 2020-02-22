@@ -15,11 +15,15 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 x_transforms = transforms.Compose([
     transforms.Resize((1024, 128)),
     transforms.ToTensor(),
-    transforms.Normalize((0.5,), (0.5,)),
+    transforms.Normalize((0.0,), (327680.0,)),
 ])
 
 # mask只需要转换为tensor
-y_transforms = x_transforms
+y_transforms = transforms.Compose([
+    transforms.Resize((1024, 128)),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,)),
+])
 
 def train_model(model, criterion, optimizer, dataload, num_epochs=30):
     for epoch in range(num_epochs):
