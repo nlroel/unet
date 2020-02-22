@@ -72,7 +72,7 @@ def test(args):
         for x, _ in dataloaders:
             y=model(x)
             img_y=torch.squeeze(y).numpy()
-            img_y = (img_y + 1) * 127.5
+            # img_y = (img_y + 1) * 127.5
             plt.imshow(img_y,aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
 
             plt.pause(0.01)
