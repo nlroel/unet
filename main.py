@@ -54,7 +54,7 @@ def train(args):
     model = Unet(1, 1).to(device)
     batch_size = args.batch_size
     criterion = nn.L1Loss()
-    optimizer = optim.Adam(model.parameters(), lr=1e-5)
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
     liver_dataset = LiverDataset("data/train",transform=x_transforms,target_transform=y_transforms)
     dataloaders = DataLoader(liver_dataset, batch_size=batch_size, shuffle=True, num_workers=1)
     train_model(model, criterion, optimizer, dataloaders)
