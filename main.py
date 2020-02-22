@@ -80,6 +80,7 @@ def test(args):
             plt.imshow(img_y,aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
 
             plt.pause(0.01)
+            plt.waitforbuttonpress()
         plt.show()
 
 
