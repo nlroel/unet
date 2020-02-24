@@ -6,7 +6,7 @@ class conv_1d(nn.Module):
         super(conv_1d, self).__init__()
         self.conv = nn.Sequential(
             nn.ReLU(inplace=True),
-            nn.Conv2d(in_ch, out_ch, kernel_size=(4,1), stride=(2,1), padding=(1,0)),
+            nn.Conv2d(in_ch, out_ch, kernel_size=(1,4), stride=(1,2), padding=(0,1)),
             nn.InstanceNorm2d(out_ch),
             # nn.BatchNorm2d(out_ch),
         )
@@ -34,7 +34,7 @@ class up_1d(nn.Module):
         super(up_1d, self).__init__()
         self.conv = nn.Sequential(
             nn.ReLU(inplace=True),
-            nn.ConvTranspose2d(in_ch, out_ch, kernel_size=(4,1), stride=(2,1), padding=(1,0)),
+            nn.ConvTranspose2d(in_ch, out_ch, kernel_size=(1,4), stride=(1,2), padding=(0,1)),
             nn.InstanceNorm2d(out_ch),
             # nn.BatchNorm2d(out_ch),
         )
@@ -62,7 +62,7 @@ class Unet(nn.Module):
     def __init__(self,in_ch,out_ch, nf=32):
         super(Unet, self).__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d(in_ch, 1*nf, kernel_size=(4,1), stride=(2,1), padding=(1,0)),
+            nn.Conv2d(in_ch, 1*nf, kernel_size=(1,4), stride=(1,2), padding=(0,1)),
         )
         self.conv2 = conv_1d(1*nf, 2*nf)
         self.conv3 = conv_2d(2*nf, 4*nf)
@@ -76,7 +76,7 @@ class Unet(nn.Module):
         # self.conv11 = conv_2d(8*nf, 8*nf)
         self.up1 = nn.Sequential(
             nn.ReLU(inplace=True),
-            nn.ConvTranspose2d(2*nf, out_ch, kernel_size=(4,1), stride=(2,1), padding=(1,0)),
+            nn.ConvTranspose2d(2*nf, out_ch, kernel_size=(1,4), stride=(1,2), padding=(0,1)),
             nn.Tanh(),
         )
         self.up2 = up_1d(4*nf, 1*nf)

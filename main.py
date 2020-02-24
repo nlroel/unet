@@ -13,14 +13,14 @@ import matplotlib.pyplot as plt
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 x_transforms = transforms.Compose([
-    transforms.Resize((1024, 128)),
+    transforms.Resize((128, 1024)),
     transforms.ToTensor(),
     transforms.Normalize((0.0,), (327680.0,)),
 ])
 
 # mask只需要转换为tensor
 y_transforms = transforms.Compose([
-    transforms.Resize((1024, 128)),
+    transforms.Resize((128, 1024)),
     transforms.ToTensor(),
     transforms.Normalize((0.5,), (0.5,)),
 ])
@@ -83,9 +83,9 @@ def test(args):
             # img_y = (img_y + 1) * 127.5
             fig = plt.figure()
             plt.subplot(121)
-            plt.imshow(img_y,aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
+            plt.imshow(img_y.transpose(),aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
             plt.subplot(122)
-            plt.imshow(img_yy,aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
+            plt.imshow(img_yy.transpose(),aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
             plt.pause(0.01)
             plt.waitforbuttonpress()
         plt.show()

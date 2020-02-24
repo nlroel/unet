@@ -35,8 +35,10 @@ class LiverDataset(Dataset):
         tmp_x = img_x
         tmp_y = np.array(img_y)
         tmp_x[:,0:100]=0
-        img_x = Image.fromarray(tmp_x.transpose())
-        img_y = Image.fromarray(tmp_y.transpose())
+        # img_x = Image.fromarray(tmp_x.transpose())
+        # img_y = Image.fromarray(tmp_y.transpose())
+        img_x = Image.fromarray(tmp_x)
+        img_y = Image.fromarray(tmp_y)
 
         if self.transform is not None:
             img_x = self.transform(img_x)
