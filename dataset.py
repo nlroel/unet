@@ -13,7 +13,7 @@ def Nomalize2(pil_img):
 
 def make_dataset(root):
     imgs=[]
-    n=len(os.listdir(root))//2
+    n=len(os.listdir(root))//3
     for i in range(n):
         img=os.path.join(root,"%03d.mat"%i)
         mask=os.path.join(root,"%03d_mask.png"%i)
