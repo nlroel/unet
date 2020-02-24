@@ -7,7 +7,7 @@ class conv_1d(nn.Module):
         self.conv = nn.Sequential(
             nn.ReLU(inplace=True),
             nn.Conv2d(in_ch, out_ch, kernel_size=(4,1), stride=(2,1), padding=(1,0)),
-            nn.BatchNorm2d(out_ch),
+            nn.InstanceNorm2d(out_ch),
             # nn.BatchNorm2d(out_ch),
         )
 
@@ -21,7 +21,7 @@ class conv_2d(nn.Module):
         self.conv = nn.Sequential(
             nn.ReLU(inplace=True),
             nn.Conv2d(in_ch, out_ch, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1)),
-            nn.BatchNorm2d(out_ch),
+            nn.InstanceNorm2d(out_ch),
             # nn.BatchNorm2d(out_ch),
         )
 
@@ -35,7 +35,7 @@ class up_1d(nn.Module):
         self.conv = nn.Sequential(
             nn.ReLU(inplace=True),
             nn.ConvTranspose2d(in_ch, out_ch, kernel_size=(4,1), stride=(2,1), padding=(1,0)),
-            nn.BatchNorm2d(out_ch),
+            nn.InstanceNorm2d(out_ch),
             # nn.BatchNorm2d(out_ch),
         )
 
@@ -49,7 +49,7 @@ class up_2d(nn.Module):
         self.conv = nn.Sequential(
             nn.ReLU(inplace=True),
             nn.ConvTranspose2d(in_ch, out_ch, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1)),
-            nn.BatchNorm2d(out_ch),
+            nn.InstanceNorm2d(out_ch),
             # nn.BatchNorm2d(out_ch),
         )
 
