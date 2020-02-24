@@ -73,12 +73,16 @@ def test(args):
     import matplotlib.pyplot as plt
     plt.ion()
     with torch.no_grad():
-        for x, _ in dataloaders:
+        for x, yy in dataloaders:
             y=model(x)
             img_y=torch.squeeze(y).numpy()
+            img_yy = torch.squeeze(yy).numpy()
             # img_y = (img_y + 1) * 127.5
+            fig = plt.figure()
+            plt.subplot(121)
             plt.imshow(img_y,aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
-
+            plt.subplot(122)
+            plt.imshow(img_yy,aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
             plt.pause(0.01)
             plt.waitforbuttonpress()
         plt.show()
