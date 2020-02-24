@@ -75,6 +75,9 @@ def test(args):
     with torch.no_grad():
         for x, yy in dataloaders:
             y=model(x)
+            l1loss = nn.L1Loss()
+            loss = l1loss(y, yy)
+            print(loss.item())
             img_y=torch.squeeze(y).numpy()
             img_yy = torch.squeeze(yy).numpy()
             # img_y = (img_y + 1) * 127.5
