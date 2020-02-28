@@ -5,6 +5,8 @@ from torch import nn, optim
 from torchvision.transforms import transforms
 from unet import Unet
 from dataset import LiverDataset
+from torchvision import models
+from torchsummary import summary
 
 import matplotlib.pyplot as plt
 
@@ -22,10 +24,11 @@ x_transforms = transforms.Compose([
 y_transforms = transforms.Compose([
     transforms.Resize((128, 1024)),
     transforms.ToTensor(),
+    transforms.Normalize((1400,), (200,)),
     transforms.Normalize((0.5,), (0.5,)),
 ])
 
-def train_model(model, criterion, optimizer, dataload, num_epochs=30):
+def train_model(model, criterion, optimizer, dataload, num_epochs=10):
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
@@ -59,15 +62,15 @@ def train(args):
     batch_size = args.batch_size
     criterion = nn.L1Loss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
-    liver_dataset = LiverDataset("data/train",transform=x_transforms,target_transform=y_transforms)
-    dataloaders = DataLoader(liver_dataset, batch_size=batch_size, shuffle=True, num_workers=1)
+    liver_dataset = LiverDataset("data/train_2",transform=x_transforms,target_transform=y_transforms)
+    dataloaders = DataLoader(liver_dataset, batch_size=batch_size, shuffle=True, num_workers=10)
     train_model(model, criterion, optimizer, dataloaders)
 
 #显示模型的输出结果
 def test(args):
     model = Unet(1, 1)
     model.load_state_dict(torch.load(args.ckpt,map_location='cpu'))
-    liver_dataset = LiverDataset("data/val", transform=x_transforms,target_transform=y_transforms)
+    liver_dataset = LiverDataset("data/val_2", transform=x_transforms,target_transform=y_transforms)
     dataloaders = DataLoader(liver_dataset, batch_size=1)
     model.eval()
     import matplotlib.pyplot as plt
@@ -81,13 +84,13 @@ def test(args):
             img_y=torch.squeeze(y).numpy()
             img_yy = torch.squeeze(yy).numpy()
             # img_y = (img_y + 1) * 127.5
-            fig = plt.figure()
+            plt.figure()
             plt.subplot(121)
             plt.imshow(img_y.transpose(),aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
             plt.subplot(122)
             plt.imshow(img_yy.transpose(),aspect = 'auto', interpolation = 'none', cmap = plt.get_cmap('gray'))
             plt.pause(0.01)
-            plt.waitforbuttonpress()
+            # plt.waitforbuttonpress()
         plt.show()
 
 

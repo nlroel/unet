@@ -10,16 +10,27 @@ def Nomalize2(pil_img):
     np_img = np.array(pil_img)
     return Image.fromarray(np_img.transpose())
 
+def list_clean(list, str):
+    nlist = []
+    for i in list:
+        if str in i:
+            nlist.append(i)
+    return nlist
 
 def make_dataset(root):
     imgs=[]
-    n=len(os.listdir(root))//3
-    for i in range(n):
-        img=os.path.join(root,"%03d.mat"%i)
-        mask=os.path.join(root,"%03d_mask.png"%i)
-        imgs.append((img,mask))
+    scan_lines = os.listdir(os.path.join(root, 'scan_lines'))
+    medium = os.listdir(os.path.join(root, 'medium'))
+    n_scan_lines = list_clean(scan_lines, "scan_lines")
+    n_scan_lines.sort()
+    n_medium = list_clean(medium, "meidium")
+    n_medium.sort()
+    for i in range(len(n_scan_lines)):
+        _in = os.path.join(root, 'scan_lines', n_scan_lines[i])
+        _out = os.path.join(root, 'medium', n_medium[i])
+        imgs.append((_in, _out))
+        print(imgs)
     return imgs
-
 
 class LiverDataset(Dataset):
     def __init__(self, root, transform=None, target_transform=None):
@@ -31,14 +42,14 @@ class LiverDataset(Dataset):
     def __getitem__(self, index):
         x_path, y_path = self.imgs[index]
         img_x = scio.loadmat(x_path)['scan_lines']
-        img_y = Image.open(y_path)
+        img_y = scio.loadmat(y_path)['medium_p']["sound_speed_map"][0,0][:,54:-54,53]
         tmp_x = img_x
-        tmp_y = np.array(img_y)
+        tmp_y = img_y
         tmp_x[:,0:100]=0
         # img_x = Image.fromarray(tmp_x.transpose())
         # img_y = Image.fromarray(tmp_y.transpose())
         img_x = Image.fromarray(tmp_x)
-        img_y = Image.fromarray(tmp_y)
+        img_y = Image.fromarray(tmp_y.transpose())
 
         if self.transform is not None:
             img_x = self.transform(img_x)
