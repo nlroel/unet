@@ -23,7 +23,7 @@ x_transforms = transforms.Compose([
 y_transforms = transforms.Compose([
     transforms.Resize((128, 1024)),
     transforms.ToTensor(),
-    transforms.Normalize((1540,), (1600-1540,)),
+    transforms.Normalize((1540,), (60,)),
 ])
 
 def train_model(model, criterion, optimizer, dataload, num_epochs=30):
