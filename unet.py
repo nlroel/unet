@@ -77,7 +77,7 @@ class Unet(nn.Module):
         self.up1 = nn.Sequential(
             nn.ReLU(inplace=True),
             nn.ConvTranspose2d(2*nf, out_ch, kernel_size=(1,4), stride=(1,2), padding=(0,1)),
-            nn.Tanh(),
+            nn.Sigmoid(),
         )
         self.up2 = up_1d(4*nf, 1*nf)
         self.up3 = up_2d(8*nf, 2*nf)

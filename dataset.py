@@ -29,7 +29,6 @@ def make_dataset(root):
         _in = os.path.join(root, 'scan_lines', n_scan_lines[i])
         _out = os.path.join(root, 'medium', n_medium[i])
         imgs.append((_in, _out))
-        print(imgs)
     return imgs
 
 class LiverDataset(Dataset):
@@ -42,15 +41,26 @@ class LiverDataset(Dataset):
     def __getitem__(self, index):
         x_path, y_path = self.imgs[index]
         img_x = scio.loadmat(x_path)['scan_lines']
-        img_y = scio.loadmat(y_path)['medium_p']["sound_speed_map"][0,0][:,54:-54,53]
+        # img_y = scio.loadmat(y_path)['medium_p']["sound_speed_map"][0,0][:,54:-54,53]
         tmp_x = img_x
-        tmp_y = img_y
         tmp_x[:,0:100]=0
         # img_x = Image.fromarray(tmp_x.transpose())
         # img_y = Image.fromarray(tmp_y.transpose())
         img_x = Image.fromarray(tmp_x)
-        img_y = Image.fromarray(tmp_y.transpose())
-
+        __data = scio.loadmat(y_path)['medium_p']
+        __img_tmp = __data["sound_speed_map"][0, 0][:, :, 53]
+        dx = 1.851851851851852e-04
+        center_x = int(__data["x_pos"].item(0)[0, 0] / dx) - 1
+        center_y = int(__data["y_pos"].item(0)[0, 0] / dx) - 1
+        radius = int(__data["radius"].item(0)[0, 0] / dx)
+        h = __img_tmp.shape[0]
+        w = __img_tmp.shape[1]
+        _X, _Y = np.ogrid[:h, :w]
+        dist_from_center = np.sqrt((_X - center_x) ** 2 + (_Y - center_y) ** 2)
+        mask = dist_from_center <= radius
+        tmp_y = np.zeros(__img_tmp.shape) * 1540
+        tmp_y[mask] = 1600
+        img_y = Image.fromarray(tmp_y[:,54:-54].transpose())
         if self.transform is not None:
             img_x = self.transform(img_x)
         if self.target_transform is not None:
