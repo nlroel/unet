@@ -29,7 +29,6 @@ def make_dataset(root):
         _in = os.path.join(root, 'scan_lines', n_scan_lines[i])
         _out = os.path.join(root, 'medium', n_medium[i])
         imgs.append((_in, _out))
-        print(imgs)
     return imgs
 
 class LiverDataset(Dataset):
