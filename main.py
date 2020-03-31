@@ -58,7 +58,7 @@ def train_model(model, criterion, optimizer, dataload, num_epochs=30):
 def train(args):
     model = Unet(1, 1).to(device)
     batch_size = args.batch_size
-    criterion = nn.SmoothL1Loss()
+    criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.01)
     liver_dataset = LiverDataset("/gs/home/majg/liupeng/code",transform=x_transforms,target_transform=y_transforms)
     dataloaders = DataLoader(liver_dataset, batch_size=batch_size, shuffle=True, num_workers=10)
@@ -68,7 +68,7 @@ def train(args):
 def test(args):
     model = Unet(1, 1)
     model.load_state_dict(torch.load(args.ckpt,map_location='cpu'))
-    liver_dataset = LiverDataset("data/val_2", transform=x_transforms,target_transform=y_transforms)
+    liver_dataset = LiverDataset("data/val", transform=x_transforms,target_transform=y_transforms)
     dataloaders = DataLoader(liver_dataset, batch_size=1)
     model.eval()
     import matplotlib.pyplot as plt
